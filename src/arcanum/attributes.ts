@@ -202,8 +202,7 @@ export const ATTRS = {
             "Prone",
             "Restrained",
             "Stunned",
-            "Unconscious",
-            "Multiple"
+            "Unconscious"
         ]
     },
     attack_type: {
