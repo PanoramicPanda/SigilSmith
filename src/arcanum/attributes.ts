@@ -6,6 +6,10 @@ export interface AttributeDef {
     default: boolean,
     // Default K value for the attribute type
     K: number,
+    // What empty binary is known as
+    empty: string,
+    // If it has a 'Multiple' catch all at the end
+    has_multiple: boolen,
     // Ordered list of possible values for the attribute type
     values: readonly string[],
 }
@@ -15,8 +19,9 @@ export const ATTRS = {
         label: 'Level',
         K: 1,
         default: true,
+        empty: "None",
+        has_multiple: false,
         values: [
-            "None",
             "0",
             "1",
             "2",
@@ -26,14 +31,16 @@ export const ATTRS = {
             "6",
             "7",
             "8",
-            "9"]
+            "9"
+        ]
     },
     school: {
         label: 'School',
         K: 2,
         default: true,
+        empty: "None",
+        has_multiple: false,
         values: [
-            "None",
             "Abjuration",
             "Conjuration",
             "Divination",
@@ -41,12 +48,15 @@ export const ATTRS = {
             "Evocation",
             "Illusion",
             "Necromancy",
-            "Transmutation"]
+            "Transmutation"
+        ]
     },
     damage_type: {
         label: 'Damage Type',
         K: 3,
         default: true,
+        empty: "None",
+        has_multiple: true,
         values: [
             "None",
             "Acid",
@@ -61,16 +71,16 @@ export const ATTRS = {
             "Psychic",
             "Radiant",
             "Slashing",
-            "Thunder",
-            "Multiple"
+            "Thunder"
         ]
     },
     area_type: {
         label: 'Area Type',
         K: 4,
         default: true,
+        empty: "None",
+        has_multiple: false,
         values: [
-            "None",
             "Cone (15)",
             "Cone (30)",
             "Cone (40)",
@@ -121,8 +131,9 @@ export const ATTRS = {
         label: 'Range',
         K: 5,
         default: true,
+        empty: "None",
+        has_multiple: false,
         values: [
-            "None",
             "1 mile",
             "10 feet",
             "100 feet",
@@ -146,8 +157,9 @@ export const ATTRS = {
         label: 'Duration',
         K: 6,
         default: true,
+        empty: "Instantaneous",
+        has_multiple: false,
         values: [
-            "Instantaneous",
             "1 hour",
             "1 minute",
             "1 round",
@@ -173,8 +185,9 @@ export const ATTRS = {
         label: 'Condition',
         K: 7,
         default: false,
+        empty: "None",
+        has_multiple: true,
         values: [
-            "None",
             "Blinded",
             "Charmed",
             "Deafened",
@@ -197,8 +210,9 @@ export const ATTRS = {
         label: "Attack Type",
         K: 8,
         default: false,
+        empty: "None",
+        has_multiple: true,
         values: [
-            "None",
             "Charisma",
             "Constitution",
             "Dexterity",
@@ -206,16 +220,16 @@ export const ATTRS = {
             "Melee Attack",
             "Ranged Attack",
             "Strength",
-            "Wisdom",
-            "Multiple"
+            "Wisdom"
         ]
     },
     tag: {
         label: 'Tag',
         K: 9,
         default: false,
+        empty: "None",
+        has_multiple: true,
         values: [
-            "None",
             "Banishment",
             "Biomancy",
             "Buff",
@@ -257,8 +271,7 @@ export const ATTRS = {
             "Utility",
             "Void",
             "Warding",
-            "Weather",
-            "Multiple"
+            "Weather"
         ]
     }
 } as const satisfies Record<string, AttributeDef>;
@@ -268,6 +281,8 @@ export type AttributeLabel = (typeof ATTRS)[AttributeKey]['label'];
 
 
 export const getK = (key: AttributeKey) => ATTRS[key].K;
+export const getEmpty = (key: AttributeKey) => ATTRS[key].empty;
+export const getMultiple = (key: AttributeKey) => ATTRS[key].has_multiple;
 export const getValues = (key: AttributeKey) => ATTRS[key].values;
 
 export const getIndex = (key: AttributeKey, value: string) => {
@@ -296,8 +311,11 @@ export const keyFromLabel = (label: string): AttributeKey => {
 };
 
 export const getKByLabel = (label: string) => getK(keyFromLabel(label));
+export const getEmptyByLabel = (label: string) => getEmpty(keyFromLabel(label));
+export const getMultipleByLabel = (label: string) => getMultiple(keyFromLabel(label));
 export const getValuesByLabel = (label: string) => getValues(keyFromLabel(label));
 export const getIndexByLabel = (label: string, value: string) => getIndex(keyFromLabel(label), value);
+
 
 
 /**
