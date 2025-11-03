@@ -184,7 +184,7 @@ export const ATTRS = {
             "Multiple"
         ]
     }
-} as const;
+} as const satisfies Record<string, AttributeDef>;
 
 export type AttributeKey = keyof typeof ATTRS;
 export type AttributeLabel = (typeof ATTRS)[AttributeKey]['label'];
@@ -208,9 +208,9 @@ export const getIndex = (key: AttributeKey, value: string) => {
 const normalize = (s: string) => s.trim().toLowerCase();
 
 /** Reverse map (normalized label -> key) for O(1) lookup */
-const LABEL_TO_KEY: Record<string, AttributeKey> = Object.fromEntries(
+const LABEL_TO_KEY = Object.fromEntries(
     (Object.keys(ATTRS) as AttributeKey[]).map(k => [normalize(ATTRS[k].label), k])
-) as Record<string, AttributeKey>;
+);
 
 export const keyFromLabel = (label: string): AttributeKey => {
     const k = LABEL_TO_KEY[normalize(label)];
